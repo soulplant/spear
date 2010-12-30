@@ -33,28 +33,69 @@ public class LinearArena implements Arena {
         if (intersection.contains(rect)) {
           // TODO The moving thing is completely inside the thing it has
           // collided with, so we need to move it out of there.
-          System.out.println("HERE");
-          continue;
+          throw new RuntimeException("Moving thing got lodged into something.");
         }
+
+        CollisionDirection direction = CollisionDirection.NONE;
 
         CollisionAxis axis = CollisionAxis.HORIZONTAL;
-        if (intersection.width > intersection.height) {
-          axis = CollisionAxis.VERTICAL;
-        }
-        if (axis == CollisionAxis.VERTICAL) {
-          int sign = (int) Math.signum(vector.y) * -1;
-          int verticalBounce = sign * intersection.height;
-
-          moveRect(rect, new Point(0, verticalBounce));
-          callback.onBounced(sign < 0 ? CollisionDirection.UP : CollisionDirection.DOWN);
+        if (Math.abs(vector.x) == Math.abs(vector.y)) {
+          // We can't use the vector to determine the direction of the
+          // collision, so we use the size of the intersection.
+          if (intersection.width == intersection.height) {
+            // We have hit a corner, so we move out horizontally.
+            axis = CollisionAxis.HORIZONTAL;
+          } else if (intersection.height < intersection.width) {
+            axis = CollisionAxis.VERTICAL;
+          }
         } else {
-          int sign = (int) Math.signum(vector.x) * -1;
-          int horizontalBounce = sign * intersection.width;
+          if (vector.x == 0 && vector.y == 0) {
+            // No movement?
+            axis = CollisionAxis.VERTICAL; // TODO Do something smarter here.
+          } else {
+            if (vector.x == 0) {
+              axis = CollisionAxis.VERTICAL;
+            } else if (vector.y == 0) {
+              axis = CollisionAxis.HORIZONTAL;
+            } else if (Math.abs(vector.x) <= Math.abs(vector.y)) {
+              axis = CollisionAxis.HORIZONTAL;
+            } else {
+              axis = CollisionAxis.VERTICAL;
+            }
+          }
+        }
 
-          moveRect(rect, new Point(horizontalBounce, 0));
-          callback.onBounced(sign < 0 ? CollisionDirection.LEFT : CollisionDirection.RIGHT);
+        if (axis == CollisionAxis.VERTICAL) {
+          direction = vector.y < 0 ? CollisionDirection.DOWN : CollisionDirection.UP;
+        } else {
+          direction = vector.x < 0 ? CollisionDirection.RIGHT : CollisionDirection.LEFT;
+        }
+
+        if (direction != CollisionDirection.NONE) {
+          moveRectOut(rect, entry.getValue(), direction);
+          callback.onBounced(direction);
         }
       }
+    }
+  }
+
+  private void moveRectOut(Rectangle moving, Rectangle stationary, CollisionDirection direction) {
+    switch (direction) {
+    case UP:
+      moving.y -= (moving.y + moving.height) - stationary.y;
+      break;
+    case DOWN:
+      moving.y += (stationary.y + stationary.height) - moving.y;
+      break;
+    case LEFT:
+      moving.x -= (moving.x + moving.width) - stationary.x;
+      break;
+    case RIGHT:
+      moving.x += (stationary.x + stationary.width) - moving.x;
+      break;
+    case NONE:
+      // Do nothing.
+      break;
     }
   }
 
