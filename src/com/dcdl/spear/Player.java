@@ -18,7 +18,7 @@ public class Player implements CollisionCallback {
   }
 
   private int clamp(int x, int i) {
-    return (int) (Math.signum(x) * Math.min(x, i));
+    return (int) (Math.signum(x) * Math.min(Math.abs(x), i));
   }
 
   public void move() {
