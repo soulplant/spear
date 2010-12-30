@@ -48,16 +48,4 @@ public class ArenaTest extends TestCase {
     assertEquals(5, player.x);
     assertEquals(5, player.y);
   }
-
-  public void testMovesIntoObject() {
-    Rectangle player = new Rectangle(5, 5, 5, 5);
-    Rectangle ground = new Rectangle(0, 10, 100, 100);
-    Point falling = new Point(0, 20);
-
-    arena.addEntity(0, ground);
-    arena.move(player, falling, null);
-
-    assertEquals(5, player.x);
-    assertEquals(5, player.y);
-  }
 }

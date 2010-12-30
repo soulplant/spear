@@ -2,14 +2,12 @@ package com.dcdl.spear.collision;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LinearArena implements Arena {
-  private enum CollisionAxis {
-    VERTICAL,
-    HORIZONTAL
-  }
   private final Map<Integer, Rectangle> entities = new HashMap<Integer, Rectangle>();
   @Override
   public void addEntity(int id, Rectangle rect) {
@@ -30,62 +28,50 @@ public class LinearArena implements Arena {
       Rectangle intersection = entry.getValue().intersection(rect);
       if (!intersection.isEmpty()) {
         // There is an overlap.
-        CollisionDirection direction = CollisionDirection.NONE;
-
-        CollisionAxis axis = CollisionAxis.HORIZONTAL;
-        if (Math.abs(vector.x) == Math.abs(vector.y)) {
-          // We can't use the vector to determine the direction of the
-          // collision, so we use the size of the intersection.
-          if (intersection.width == intersection.height) {
-            // We have hit a corner, so we move out horizontally.
-            axis = CollisionAxis.HORIZONTAL;
-          } else if (intersection.height < intersection.width) {
-            axis = CollisionAxis.VERTICAL;
-          }
-        } else {
-          if (vector.x == 0 && vector.y == 0) {
-            // No movement?
-            axis = CollisionAxis.VERTICAL; // TODO Do something smarter here.
-          } else {
-            if (vector.x == 0) {
-              axis = CollisionAxis.VERTICAL;
-            } else if (vector.y == 0) {
-              axis = CollisionAxis.HORIZONTAL;
-            } else if (Math.abs(vector.x) <= Math.abs(vector.y)) {
-              axis = CollisionAxis.HORIZONTAL;
-            } else {
-              axis = CollisionAxis.VERTICAL;
-            }
+        List<CollisionDirection> directions = Arrays.asList(
+            CollisionDirection.UP, CollisionDirection.DOWN,
+            CollisionDirection.LEFT, CollisionDirection.RIGHT);
+        int smallest = 0;
+        CollisionDirection smallestDirection = CollisionDirection.NONE;
+        for (CollisionDirection dir : directions) {
+          int displacement = Math.abs(getDisplacement(rect, entry.getValue(), dir));
+          if (smallest == 0 || displacement < smallest) {
+            smallest = displacement;
+            smallestDirection = dir;
           }
         }
 
-        if (axis == CollisionAxis.VERTICAL) {
-          direction = vector.y < 0 ? CollisionDirection.DOWN : CollisionDirection.UP;
-        } else {
-          direction = vector.x < 0 ? CollisionDirection.RIGHT : CollisionDirection.LEFT;
-        }
-
-        if (direction != CollisionDirection.NONE) {
-          moveRectOut(rect, entry.getValue(), direction);
-          callback.onBounced(direction);
+        if (smallestDirection != CollisionDirection.NONE) {
+          moveRectOut(rect, entry.getValue(), smallestDirection);
+          callback.onBounced(smallestDirection);
         }
       }
     }
   }
 
+  private int getDisplacement(Rectangle moving, Rectangle stationary, CollisionDirection direction) {
+    switch (direction) {
+    case UP:
+      return (moving.y + moving.height) - stationary.y;
+    case DOWN:
+      return - ((stationary.y + stationary.height) - moving.y);
+    case LEFT:
+      return (moving.x + moving.width) - stationary.x;
+    case RIGHT:
+      return - ((stationary.x + stationary.width) - moving.x);
+    }
+    return 0;
+  }
+
   private void moveRectOut(Rectangle moving, Rectangle stationary, CollisionDirection direction) {
     switch (direction) {
     case UP:
-      moving.y -= (moving.y + moving.height) - stationary.y;
-      break;
     case DOWN:
-      moving.y += (stationary.y + stationary.height) - moving.y;
+      moving.y -= getDisplacement(moving, stationary, direction);
       break;
     case LEFT:
-      moving.x -= (moving.x + moving.width) - stationary.x;
-      break;
     case RIGHT:
-      moving.x += (stationary.x + stationary.width) - moving.x;
+      moving.x -= getDisplacement(moving, stationary, direction);
       break;
     case NONE:
       // Do nothing.
