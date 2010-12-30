@@ -30,12 +30,6 @@ public class LinearArena implements Arena {
       Rectangle intersection = entry.getValue().intersection(rect);
       if (!intersection.isEmpty()) {
         // There is an overlap.
-        if (intersection.contains(rect)) {
-          // TODO The moving thing is completely inside the thing it has
-          // collided with, so we need to move it out of there.
-          throw new RuntimeException("Moving thing got lodged into something.");
-        }
-
         CollisionDirection direction = CollisionDirection.NONE;
 
         CollisionAxis axis = CollisionAxis.HORIZONTAL;

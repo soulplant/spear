@@ -49,8 +49,7 @@ public class ArenaTest extends TestCase {
     assertEquals(5, player.y);
   }
 
-  // Not implemented (unlikely to occur in the game).
-  public void disabled_testMovesIntoObject() {
+  public void testMovesIntoObject() {
     Rectangle player = new Rectangle(5, 5, 5, 5);
     Rectangle ground = new Rectangle(0, 10, 100, 100);
     Point falling = new Point(0, 20);
