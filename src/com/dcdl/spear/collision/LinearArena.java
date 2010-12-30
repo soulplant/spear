@@ -7,8 +7,10 @@ import java.util.Map;
 
 public class LinearArena implements Arena {
   public enum CollisionDirection {
-    VERTICAL,
-    HORIZONTAL,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
     NONE
   }
   private final Map<Integer, Rectangle> entities = new HashMap<Integer, Rectangle>();
@@ -32,13 +34,13 @@ public class LinearArena implements Arena {
           int verticalBounce = sign * intersection.height;
 
           moveRect(rect, new Point(0, verticalBounce));
-          return CollisionDirection.VERTICAL;
+          return sign < 0 ? CollisionDirection.UP : CollisionDirection.DOWN;
         } else {
           int sign = (int) Math.signum(vector.x) * -1;
           int horizontalBounce = sign * intersection.width;
 
           moveRect(rect, new Point(horizontalBounce, 0));
-          return CollisionDirection.HORIZONTAL;
+          return sign < 0 ? CollisionDirection.LEFT : CollisionDirection.RIGHT;
         }
       }
     }

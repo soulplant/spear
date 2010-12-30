@@ -21,7 +21,7 @@ public class Game implements KeyListener {
   public void tick() {
     player.move();
     CollisionDirection cd = floor.collide(player.getRect(), player.getLastMove());
-    if (cd == CollisionDirection.VERTICAL) {
+    if (cd == CollisionDirection.UP) {
       player.hitFloor();
     }
   }
