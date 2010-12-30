@@ -28,20 +28,31 @@ public class Game implements KeyListener {
     player.render(g);
   }
 
+  private void onKey(KeyEvent e, boolean pressed) {
+    switch (e.getKeyCode()) {
+    case KeyEvent.VK_X:
+      player.jump(pressed);
+      break;
+    case KeyEvent.VK_LEFT:
+      player.left(pressed);
+      break;
+    case KeyEvent.VK_RIGHT:
+      player.right(pressed);
+      break;
+    }
+  }
+
   @Override
   public void keyPressed(KeyEvent e) {
-    player.jump();
+    onKey(e, true);
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
-    // TODO Auto-generated method stub
-
+    onKey(e, false);
   }
 
   @Override
   public void keyTyped(KeyEvent e) {
-    // TODO Auto-generated method stub
-
   }
 }

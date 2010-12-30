@@ -12,6 +12,8 @@ public class Player implements CollisionCallback {
   private Point lastMove;
   private final Point acceleration = new Point(0, 1);
   private Point velocity = new Point(0, 0);
+  private boolean leftPressed = false;
+  private boolean rightPressed = false;
 
   public Player(int x, int y, int w, int h) {
     rect = new Rectangle(x, y, w, h);
@@ -22,11 +24,16 @@ public class Player implements CollisionCallback {
   }
 
   public void move() {
-//    System.out.println("velocity = " + velocity + ", rect = " + rect);
+    velocity.x = 0;
+    if (leftPressed && !rightPressed) {
+      velocity.x = -1;
+    }
+    if (rightPressed && !leftPressed) {
+      velocity.x = 1;
+    }
     velocity.x += acceleration.x;
     velocity.y += acceleration.y;
-//    velocity.y = clamp(velocity.y, 10);
-//    velocity.x = clamp(velocity.x, 10);
+    velocity.y = Math.min(velocity.y, 10);
     rect.x += velocity.x;
     rect.y += velocity.y;
     lastMove = (Point) velocity.clone();
@@ -45,11 +52,6 @@ public class Player implements CollisionCallback {
     g.fillRect(rect.x, rect.y, rect.width, rect.height);
   }
 
-  public void jump() {
-    velocity = new Point(0, -20);
-    System.out.println("Jump!");
-  }
-
   public void hitFloor() {
     velocity.y = 0;
   }
@@ -59,5 +61,18 @@ public class Player implements CollisionCallback {
     if (collisionDirection == CollisionDirection.UP) {
       hitFloor();
     }
+  }
+
+  public void left(boolean pressed) {
+    this.leftPressed = pressed;
+  }
+
+  public void right(boolean pressed) {
+    this.rightPressed = pressed;
+  }
+
+  public void jump(boolean pressed) {
+    velocity = new Point(0, -20);
+    System.out.println("Jump!");
   }
 }
