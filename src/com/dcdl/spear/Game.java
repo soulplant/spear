@@ -16,7 +16,7 @@ public class Game implements KeyListener {
     player = new Player(0, 240 - 16, 16, 16);
     stage = new Stage();
     floor = new LinearArena();
-    floor.addEntity(0, new Rectangle(0, 240, 320, 10)); // The ground.
+    floor.addEntity(0, new Rectangle(0, 240 * Constants.SCALE, 320 * Constants.SCALE, 10 * Constants.SCALE)); // The ground.
   }
 
   public void tick() {

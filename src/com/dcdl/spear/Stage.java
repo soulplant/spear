@@ -40,12 +40,16 @@ public class Stage {
   public void render(Graphics g) {
     g.setColor(Color.RED);
     for (Block block : blocks) {
-      g.fillRect(block.rect.x, block.rect.y, block.rect.width, block.rect.height);
+      g.fillRect(block.rect.x / Constants.SCALE,
+          block.rect.y / Constants.SCALE, block.rect.width / Constants.SCALE,
+          block.rect.height / Constants.SCALE);
     }
   }
 
   private void addBlock(int x, int y) {
-    Rectangle rect = new Rectangle(x * 16, 240 - (y + 1) * 16, 16, 16);
+    Rectangle rect = new Rectangle(x * 16 * Constants.SCALE,
+        (240 - (y + 1) * 16) * Constants.SCALE, 16 * Constants.SCALE,
+        16 * Constants.SCALE);
     Block block = new Block(blockId++, x, y, rect);
     blocks.add(block);
     arena.addEntity(block.id, rect);
