@@ -22,6 +22,6 @@ public interface Arena {
   }
 
   void addEntity(int id, Rectangle rect);
-  void move(Rectangle rect, Point vector,
-      CollisionCallback callback);
+  void move(Rectangle rect, Point vector, CollisionCallback callback);
+  void collide(Rectangle rect, Point vector, CollisionCallback callback);
 }

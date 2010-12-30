@@ -20,6 +20,7 @@ public class LinearArena implements Arena {
     collide(rect, vector, callback);
   }
 
+  @Override
   public void collide(Rectangle rect, Point vector, CollisionCallback callback) {
     if (callback == null) {
       callback = new EmptyCollisionCallback();

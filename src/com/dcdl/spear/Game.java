@@ -10,9 +10,11 @@ import com.dcdl.spear.collision.LinearArena;
 public class Game implements KeyListener {
   private final Player player;
   private final LinearArena floor;
+  private final Stage stage;
 
   public Game() {
     player = new Player(0, 240 - 16, 16, 16);
+    stage = new Stage();
     floor = new LinearArena();
     floor.addEntity(0, new Rectangle(0, 240, 320, 10)); // The ground.
   }
@@ -20,11 +22,12 @@ public class Game implements KeyListener {
   public void tick() {
     player.move();
     floor.collide(player.getRect(), player.getLastMove(), player);
-//    System.out.println("Now player is at: " + player.getRect());
+    stage.collide(player.getRect(), player.getLastMove(), player);
   }
 
   public void render(Graphics g) {
     g.clearRect(0, 0, 320, 240);  // TODO Remove magic numbers.
+    stage.render(g);
     player.render(g);
   }
 
