@@ -19,7 +19,7 @@ public class ArenaTest extends TestCase {
     Point falling = new Point(0, 2);
 
     arena.addEntity(0, ground);
-    arena.move(player, falling);
+    arena.move(player, falling, null);
 
     assertEquals(-10, player.y);
   }
@@ -27,10 +27,10 @@ public class ArenaTest extends TestCase {
   public void testFallToGround() {
     Rectangle player = new Rectangle(0, 0, 5, 5);
     Rectangle ground = new Rectangle(0, 10, 100, 100);
-    Point falling = new Point(0, 10);
+    Point falling = new Point(0, 7);
 
     arena.addEntity(0, ground);
-    arena.move(player, falling);
+    arena.move(player, falling, null);
 
     assertEquals(5, player.y);
   }
@@ -43,7 +43,20 @@ public class ArenaTest extends TestCase {
 
     arena.addEntity(0, ground);
     arena.addEntity(1, wall);
-    arena.move(player, falling);
+    arena.move(player, falling, null);
+
+    assertEquals(5, player.x);
+    assertEquals(5, player.y);
+  }
+
+  // Not implemented (unlikely to occur in the game).
+  public void disabled_testMovesIntoObject() {
+    Rectangle player = new Rectangle(5, 5, 5, 5);
+    Rectangle ground = new Rectangle(0, 10, 100, 100);
+    Point falling = new Point(0, 20);
+
+    arena.addEntity(0, ground);
+    arena.move(player, falling, null);
 
     assertEquals(5, player.x);
     assertEquals(5, player.y);

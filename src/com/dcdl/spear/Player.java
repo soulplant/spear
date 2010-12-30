@@ -4,15 +4,12 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-public class Player {
-  private enum State {
-    NEUTRAL,
-    FALLING,
-    JUMPING
-  }
+import com.dcdl.spear.collision.Arena.CollisionCallback;
+import com.dcdl.spear.collision.Arena.CollisionDirection;
+
+public class Player implements CollisionCallback {
   private final Rectangle rect;
   private Point lastMove;
-  private final State state = State.NEUTRAL;
   private final Point acceleration = new Point(0, 1);
   private Point velocity = new Point(0, 0);
 
@@ -25,7 +22,7 @@ public class Player {
   }
 
   public void move() {
-    System.out.println("velocity = " + velocity);
+//    System.out.println("velocity = " + velocity + ", rect = " + rect);
     velocity.x += acceleration.x;
     velocity.y += acceleration.y;
 //    velocity.y = clamp(velocity.y, 10);
@@ -44,6 +41,7 @@ public class Player {
   }
 
   public void render(Graphics g) {
+//    System.out.println("render!");
     g.fillRect(rect.x, rect.y, rect.width, rect.height);
   }
 
@@ -54,5 +52,12 @@ public class Player {
 
   public void hitFloor() {
     velocity.y = 0;
+  }
+
+  @Override
+  public void onBounced(CollisionDirection collisionDirection) {
+    if (collisionDirection == CollisionDirection.UP) {
+      hitFloor();
+    }
   }
 }

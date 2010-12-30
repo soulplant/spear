@@ -3,18 +3,25 @@ package com.dcdl.spear.collision;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import com.dcdl.spear.collision.LinearArena.CollisionDirection;
-
 public interface Arena {
-  public class Collision {
-    public int id;
-    public Point vector;
-
-    public Collision(int id, Point vector) {
-      this.id = id;
-      this.vector = vector;
-    }
+  public interface CollisionCallback {
+    void onBounced(CollisionDirection collisionDirection);
   }
-  CollisionDirection move(Rectangle rect, Point vector);
+
+  public class EmptyCollisionCallback implements CollisionCallback {
+    @Override
+    public void onBounced(CollisionDirection collisionDirection) { }
+  }
+
+  public enum CollisionDirection {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NONE
+  }
+
   void addEntity(int id, Rectangle rect);
+  void move(Rectangle rect, Point vector,
+      CollisionCallback callback);
 }

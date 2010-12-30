@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import com.dcdl.spear.collision.LinearArena;
-import com.dcdl.spear.collision.LinearArena.CollisionDirection;
 
 public class Game implements KeyListener {
   private final Player player;
@@ -20,10 +19,8 @@ public class Game implements KeyListener {
 
   public void tick() {
     player.move();
-    CollisionDirection cd = floor.collide(player.getRect(), player.getLastMove());
-    if (cd == CollisionDirection.UP) {
-      player.hitFloor();
-    }
+    floor.collide(player.getRect(), player.getLastMove(), player);
+//    System.out.println("Now player is at: " + player.getRect());
   }
 
   public void render(Graphics g) {
