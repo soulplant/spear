@@ -5,11 +5,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Player extends Entity {
+  private static final int WIDTH_PX = 16;
+  private static final int HEIGHT_PX = 16;
   private boolean leftPressed = false;
   private boolean rightPressed = false;
 
-  public Player(int x, int y, int w, int h) {
-    super(new Rectangle(x * Constants.SCALE, y * Constants.SCALE, w * Constants.SCALE, h * Constants.SCALE));
+  public Player(int x, int y) {
+    super(Util.scaleRect(new Rectangle(x, y, WIDTH_PX, HEIGHT_PX), Constants.SCALE));
   }
 
   public void render(Graphics g) {

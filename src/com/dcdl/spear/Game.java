@@ -17,7 +17,7 @@ public class Game implements KeyListener {
   private final LinearArena enemyArena;
 
   public Game() {
-    player = new Player(0, 240 - 16, 16, 16);
+    player = new Player(0, 240 - 16);
     stage = new Stage();
     floor = new LinearArena();
     floor.addEntity(new Entity(Util.scaleRect(new Rectangle(0, 240, 320, 10),
