@@ -15,15 +15,10 @@ public class Player implements CollisionCallback {
   private Point velocity = new Point(0, 0);
   private boolean leftPressed = false;
   private boolean rightPressed = false;
+  private boolean onFloor = false;
 
   public Player(int x, int y, int w, int h) {
     rect = new Rectangle(x * Constants.SCALE, y * Constants.SCALE, w * Constants.SCALE, h * Constants.SCALE);
-  }
-
-  private int clamp(int x, int i) {
-    int result = Math.min(x, i);
-    result = Math.max(x, -1);
-    return result;
   }
 
   public void moveHorizontal() {
@@ -52,6 +47,7 @@ public class Player implements CollisionCallback {
     lastMove = (Point) velocity.clone();
     rect.y += velocity.y;
     lastMove = new Point(0, velocity.y);
+    onFloor = false;
   }
 
   public Point getLastMove() {
@@ -69,11 +65,11 @@ public class Player implements CollisionCallback {
 
   public void hitFloor() {
     velocity.y = 0;
+    onFloor = true;
   }
 
   @Override
   public void onBounced(CollisionDirection collisionDirection) {
-    System.out.println("Bounced " + collisionDirection);
     if (collisionDirection == CollisionDirection.UP) {
       hitFloor();
     }
@@ -88,7 +84,7 @@ public class Player implements CollisionCallback {
   }
 
   public void jump(boolean pressed) {
-    if (pressed) {
+    if (onFloor && pressed) {
       velocity = new Point(0, -2 * Constants.SCALE);
       System.out.println("Jump!");
     }
