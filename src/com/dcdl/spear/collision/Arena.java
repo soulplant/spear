@@ -34,5 +34,8 @@ public interface Arena {
     }
   }
 
+  /**
+   * Collides the given entity with the entities in this {@link Arena}.
+   */
   void collide(Entity entity, Direction direction);
 }
