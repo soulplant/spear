@@ -33,14 +33,6 @@ public class Player implements CollisionCallback {
     lastMove = new Point(velocity.x, 0);
   }
 
-  public CollisionDirection getHorizontalDirection() {
-    return velocity.x < 0 ? CollisionDirection.LEFT : CollisionDirection.RIGHT;
-  }
-
-  public CollisionDirection getVerticalDirection() {
-    return velocity.y < 0 ? CollisionDirection.UP : CollisionDirection.DOWN;
-  }
-
   public void moveVertical() {
     velocity.y += GRAVITY;
     velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
@@ -48,6 +40,14 @@ public class Player implements CollisionCallback {
     rect.y += velocity.y;
     lastMove = new Point(0, velocity.y);
     onFloor = false;
+  }
+
+  public CollisionDirection getHorizontalDirection() {
+    return velocity.x < 0 ? CollisionDirection.LEFT : CollisionDirection.RIGHT;
+  }
+
+  public CollisionDirection getVerticalDirection() {
+    return velocity.y < 0 ? CollisionDirection.UP : CollisionDirection.DOWN;
   }
 
   public Point getLastMove() {
@@ -59,7 +59,6 @@ public class Player implements CollisionCallback {
   }
 
   public void render(Graphics g) {
-//    System.out.println("render!");
     g.fillRect(rect.x / Constants.SCALE, rect.y / Constants.SCALE, rect.width / Constants.SCALE, rect.height / Constants.SCALE);
   }
 
