@@ -21,6 +21,20 @@ public class LinearArena implements Arena {
   }
 
   @Override
+  public void collide(Rectangle rect, CollisionDirection direction,
+      CollisionCallback callback) {
+    if (callback == null) {
+      callback = new EmptyCollisionCallback();
+    }
+    for (Map.Entry<Integer, Rectangle> entry : entities.entrySet()) {
+      Rectangle intersection = entry.getValue().intersection(rect);
+      if (!intersection.isEmpty() && direction != CollisionDirection.NONE) {
+        moveRectOut(rect, entry.getValue(), direction.opposite());
+      }
+    }
+  }
+
+  @Override
   public void collide(Rectangle rect, Point vector, CollisionCallback callback) {
     if (callback == null) {
       callback = new EmptyCollisionCallback();

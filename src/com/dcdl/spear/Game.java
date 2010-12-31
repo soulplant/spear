@@ -20,9 +20,12 @@ public class Game implements KeyListener {
   }
 
   public void tick() {
-    player.move();
-    floor.collide(player.getRect(), player.getLastMove(), player);
-    stage.collide(player.getRect(), player.getLastMove(), player);
+    player.moveHorizontal();
+    floor.collide(player.getRect(), player.getHorizontalDirection(), player);
+    stage.collide(player.getRect(), player.getHorizontalDirection(), player);
+    player.moveVertical();
+    floor.collide(player.getRect(), player.getVerticalDirection(), player);
+    stage.collide(player.getRect(), player.getVerticalDirection(), player);
   }
 
   public void render(Graphics g) {

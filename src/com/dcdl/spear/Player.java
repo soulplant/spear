@@ -9,9 +9,9 @@ import com.dcdl.spear.collision.Arena.CollisionDirection;
 
 public class Player implements CollisionCallback {
   private static final int MAX_FALL_SPEED = 1000;
+  private static final int GRAVITY = Constants.SCALE / 10;
   private final Rectangle rect;
   private Point lastMove;
-  private final Point acceleration = new Point(0, 1 * Constants.SCALE);
   private Point velocity = new Point(0, 0);
   private boolean leftPressed = false;
   private boolean rightPressed = false;
@@ -26,7 +26,7 @@ public class Player implements CollisionCallback {
     return result;
   }
 
-  public void move() {
+  public void moveHorizontal() {
     velocity.x = 0;
     if (leftPressed && !rightPressed) {
       velocity.x = -1 * Constants.SCALE;
@@ -34,12 +34,24 @@ public class Player implements CollisionCallback {
     if (rightPressed && !leftPressed) {
       velocity.x = 1 * Constants.SCALE;
     }
-    velocity.x += acceleration.x;
-    velocity.y += acceleration.y;
-    velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
     rect.x += velocity.x;
-    rect.y += velocity.y;
+    lastMove = new Point(velocity.x, 0);
+  }
+
+  public CollisionDirection getHorizontalDirection() {
+    return velocity.x < 0 ? CollisionDirection.LEFT : CollisionDirection.RIGHT;
+  }
+
+  public CollisionDirection getVerticalDirection() {
+    return velocity.y < 0 ? CollisionDirection.UP : CollisionDirection.DOWN;
+  }
+
+  public void moveVertical() {
+    velocity.y += GRAVITY;
+    velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
     lastMove = (Point) velocity.clone();
+    rect.y += velocity.y;
+    lastMove = new Point(0, velocity.y);
   }
 
   public Point getLastMove() {
@@ -76,7 +88,9 @@ public class Player implements CollisionCallback {
   }
 
   public void jump(boolean pressed) {
-    velocity = new Point(0, -20 * Constants.SCALE);
-    System.out.println("Jump!");
+    if (pressed) {
+      velocity = new Point(0, -2 * Constants.SCALE);
+      System.out.println("Jump!");
+    }
   }
 }

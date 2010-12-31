@@ -19,9 +19,20 @@ public interface Arena {
     LEFT,
     RIGHT,
     NONE
+    ;
+    public CollisionDirection opposite() {
+      switch (this) {
+      case UP: return DOWN;
+      case DOWN: return UP;
+      case LEFT: return RIGHT;
+      case RIGHT: return LEFT;
+      default: return this;
+      }
+    }
   }
 
   void addEntity(int id, Rectangle rect);
   void move(Rectangle rect, Point vector, CollisionCallback callback);
   void collide(Rectangle rect, Point vector, CollisionCallback callback);
+  void collide(Rectangle rect, CollisionDirection direction, CollisionCallback callback);
 }

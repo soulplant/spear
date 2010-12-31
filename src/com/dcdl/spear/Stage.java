@@ -10,6 +10,7 @@ import java.util.List;
 import com.dcdl.spear.collision.Arena;
 import com.dcdl.spear.collision.LinearArena;
 import com.dcdl.spear.collision.Arena.CollisionCallback;
+import com.dcdl.spear.collision.Arena.CollisionDirection;
 
 public class Stage {
   private class Block {
@@ -55,7 +56,7 @@ public class Stage {
     arena.addEntity(block.id, rect);
   }
 
-  public void collide(Rectangle rect, Point lastMove, CollisionCallback callback) {
-    arena.collide(rect, lastMove, callback);
+  public void collide(Rectangle rect, CollisionDirection collisionDirection, CollisionCallback callback) {
+    arena.collide(rect, collisionDirection, callback);
   }
 }
