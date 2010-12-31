@@ -49,7 +49,7 @@ public class Entity implements CollisionCallback {
   }
 
   @Override
-  public void onBounced(Direction direction) {
+  public void onBounced(Direction direction, Entity otherEntity) {
     if (direction == Direction.UP) {
       hitFloor();
     }
@@ -96,4 +96,6 @@ public class Entity implements CollisionCallback {
   public int getHeight() {
     return rect.height;
   }
+
+  public void onGotBouncedIntoBy(Direction bounceDirection, Entity entity) { }
 }

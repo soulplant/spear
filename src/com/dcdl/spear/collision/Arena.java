@@ -4,12 +4,12 @@ import com.dcdl.spear.Entity;
 
 public interface Arena {
   public interface CollisionCallback {
-    void onBounced(Direction direction);
+    void onBounced(Direction direction, Entity otherEntity);
   }
 
   public class EmptyCollisionCallback implements CollisionCallback {
     @Override
-    public void onBounced(Direction direction) { }
+    public void onBounced(Direction direction, Entity otherEntity) { }
   }
 
   public enum Direction {

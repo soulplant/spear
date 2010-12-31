@@ -22,8 +22,10 @@ public class LinearArena implements Arena {
       Entity otherEntity = entry.getValue();
       Rectangle intersection = otherEntity.intersection(entity);
       if (!intersection.isEmpty()) {
-        moveRectOut(entity.getRect(), otherEntity.getRect(), direction.opposite());
-        entity.onBounced(direction.opposite());
+        Direction bounceDirection = direction.opposite();
+        moveRectOut(entity.getRect(), otherEntity.getRect(), bounceDirection);
+        entity.onBounced(bounceDirection, otherEntity);
+        otherEntity.onGotBouncedIntoBy(bounceDirection, entity);
       }
     }
   }

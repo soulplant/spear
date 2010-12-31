@@ -25,8 +25,8 @@ public class Walker extends Entity {
   }
 
   @Override
-  public void onBounced(Direction direction) {
-    super.onBounced(direction);
+  public void onBounced(Direction direction, Entity otherEntity) {
+    super.onBounced(direction, otherEntity);
     if (direction.isHorizontal()) {
       facing = direction;
       setXVelocity(-getXVelocity());
