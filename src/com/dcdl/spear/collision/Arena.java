@@ -34,6 +34,5 @@ public interface Arena {
     }
   }
 
-  void addEntity(int id, Rectangle rect);
   void collide(Rectangle rect, Direction direction, CollisionCallback callback);
 }

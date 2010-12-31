@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class LinearArena implements Arena {
   private final Map<Integer, Rectangle> entities = new HashMap<Integer, Rectangle>();
-  @Override
+
   public void addEntity(int id, Rectangle rect) {
     entities.put(id, rect);
   }
@@ -28,7 +28,6 @@ public class LinearArena implements Arena {
       }
     }
   }
-
 
   private int getDisplacement(Rectangle moving, Rectangle stationary, Direction direction) {
     switch (direction) {

@@ -8,10 +8,8 @@ import java.util.List;
 
 import com.dcdl.spear.collision.Arena;
 import com.dcdl.spear.collision.LinearArena;
-import com.dcdl.spear.collision.Arena.CollisionCallback;
-import com.dcdl.spear.collision.Arena.Direction;
 
-public class Stage {
+public class Stage implements Arena {
   private class Block {
     private final int id;
     private final int x;
@@ -26,7 +24,7 @@ public class Stage {
     }
   }
 
-  private final Arena arena = new LinearArena();
+  private final LinearArena arena = new LinearArena();
   private final List<Block> blocks = new ArrayList<Block>();
   private int blockId = 0;
 

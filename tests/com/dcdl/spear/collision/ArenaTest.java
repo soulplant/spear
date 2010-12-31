@@ -15,8 +15,8 @@ public class ArenaTest extends TestCase {
   }
 
   public void testBouncedUpwardsFromGround() {
-    Rectangle player = new Rectangle(0, -10, 10, 10);
-    Rectangle ground = new Rectangle(0, 0, 100, 100);
+    Rectangle player = makeEntity(0, -10, 10, 10);
+    Rectangle ground = makeEntity(0, 0, 100, 100);
 
     arena.addEntity(0, ground);
 
@@ -27,9 +27,9 @@ public class ArenaTest extends TestCase {
   }
 
   public void testMultipleObstacles() {
-    Rectangle player = new Rectangle(5, 5, 5, 5);
-    Rectangle ground = new Rectangle(0, 10, 100, 100);
-    Rectangle wall = new Rectangle(10, 0, 10, 10);
+    Rectangle player = makeEntity(5, 5, 5, 5);
+    Rectangle ground = makeEntity(0, 10, 100, 100);
+    Rectangle wall = makeEntity(10, 0, 10, 10);
 
     arena.addEntity(0, ground);
     arena.addEntity(1, wall);
@@ -42,5 +42,9 @@ public class ArenaTest extends TestCase {
 
     assertEquals(5, player.x);
     assertEquals(5, player.y);
+  }
+
+  private Rectangle makeEntity(int x, int y, int width, int height) {
+    return new Rectangle(x, y ,width, height);
   }
 }
