@@ -21,6 +21,7 @@ public class LinearArena implements Arena {
       Rectangle intersection = entry.getValue().intersection(rect);
       if (!intersection.isEmpty() && direction != CollisionDirection.NONE) {
         moveRectOut(rect, entry.getValue(), direction.opposite());
+        callback.onBounced(direction.opposite());
       }
     }
   }
