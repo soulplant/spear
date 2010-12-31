@@ -7,11 +7,6 @@ public interface Arena {
     void onBounced(Direction direction, Entity otherEntity);
   }
 
-  public class EmptyCollisionCallback implements CollisionCallback {
-    @Override
-    public void onBounced(Direction direction, Entity otherEntity) { }
-  }
-
   public enum Direction {
     UP,
     DOWN,
