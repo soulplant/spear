@@ -10,17 +10,13 @@ import com.dcdl.spear.collision.Arena;
 import com.dcdl.spear.collision.LinearArena;
 
 public class Stage implements Arena {
-  private class Block {
+  private class Block extends Entity {
     private final int id;
-    private final int x;
-    private final int y;
-    private final Rectangle rect;
 
-    public Block(int id, int x, int y, Rectangle rect) {
+    public Block(int id, int x, int y, Entity rect) {
+      super(Util.scaleRect(new Rectangle(x * 16, (240 - (y + 1) * 16), 16, 16),
+          Constants.SCALE));
       this.id = id;
-      this.x = x;
-      this.y = y;
-      this.rect = rect;
     }
   }
 
@@ -47,22 +43,21 @@ public class Stage implements Arena {
   public void render(Graphics g) {
     g.setColor(Color.RED);
     for (Block block : blocks) {
-      g.fillRect(block.rect.x / Constants.SCALE,
-          block.rect.y / Constants.SCALE, block.rect.width / Constants.SCALE,
-          block.rect.height / Constants.SCALE);
+      Rectangle rect = Util.scaleRect(block.getRect(), 1.0 / Constants.SCALE);
+      g.fillRect(rect.x, rect.y, rect.width, rect.height);
     }
   }
 
   private void addBlock(int x, int y) {
-    Rectangle rect = new Rectangle(x * 16 * Constants.SCALE,
+    Entity rect = new Entity(new Rectangle(x * 16 * Constants.SCALE,
         (240 - (y + 1) * 16) * Constants.SCALE, 16 * Constants.SCALE,
-        16 * Constants.SCALE);
+        16 * Constants.SCALE));
     Block block = new Block(blockId++, x, y, rect);
     blocks.add(block);
     arena.addEntity(block.id, rect);
   }
 
-  public void collide(Rectangle rect, Direction collisionDirection, CollisionCallback callback) {
-    arena.collide(rect, collisionDirection, callback);
+  public void collide(Entity entity, Direction collisionDirection) {
+    arena.collide(entity, collisionDirection);
   }
 }

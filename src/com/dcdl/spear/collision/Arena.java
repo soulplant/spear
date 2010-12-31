@@ -1,6 +1,6 @@
 package com.dcdl.spear.collision;
 
-import java.awt.Rectangle;
+import com.dcdl.spear.Entity;
 
 public interface Arena {
   public interface CollisionCallback {
@@ -34,5 +34,5 @@ public interface Arena {
     }
   }
 
-  void collide(Rectangle rect, Direction direction, CollisionCallback callback);
+  void collide(Entity entity, Direction direction);
 }

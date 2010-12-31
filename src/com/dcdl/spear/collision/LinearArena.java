@@ -4,27 +4,26 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LinearArena implements Arena {
-  private final Map<Integer, Rectangle> entities = new HashMap<Integer, Rectangle>();
+import com.dcdl.spear.Entity;
 
-  public void addEntity(int id, Rectangle rect) {
-    entities.put(id, rect);
+public class LinearArena implements Arena {
+  private final Map<Integer, Entity> entities = new HashMap<Integer, Entity>();
+
+  public void addEntity(int id, Entity entity) {
+    entities.put(id, entity);
   }
 
   @Override
-  public void collide(Rectangle rect, Direction direction,
-      CollisionCallback callback) {
+  public void collide(Entity entity, Direction direction) {
     if (direction == Direction.NONE) {
       return;
     }
-    if (callback == null) {
-      callback = new EmptyCollisionCallback();
-    }
-    for (Map.Entry<Integer, Rectangle> entry : entities.entrySet()) {
-      Rectangle intersection = entry.getValue().intersection(rect);
+    for (Map.Entry<Integer, Entity> entry : entities.entrySet()) {
+      Entity otherEntity = entry.getValue();
+      Rectangle intersection = otherEntity.intersection(entity);
       if (!intersection.isEmpty()) {
-        moveRectOut(rect, entry.getValue(), direction.opposite());
-        callback.onBounced(direction.opposite());
+        moveRectOut(entity.getRect(), otherEntity.getRect(), direction.opposite());
+        entity.onBounced(direction.opposite());
       }
     }
   }

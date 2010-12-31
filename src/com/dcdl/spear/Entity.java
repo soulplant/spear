@@ -71,4 +71,29 @@ public class Entity implements CollisionCallback {
   public Rectangle getRect() {
     return rect;
   }
+
+  public Rectangle intersection(Entity entity) {
+    return getRect().intersection(entity.getRect());
+  }
+
+  public void displace(int x, int y) {
+    rect.x += x;
+    rect.y += y;
+  }
+
+  public int getX() {
+    return rect.x;
+  }
+
+  public int getY() {
+    return rect.y;
+  }
+
+  public int getWidth() {
+    return rect.width;
+  }
+
+  public int getHeight() {
+    return rect.height;
+  }
 }

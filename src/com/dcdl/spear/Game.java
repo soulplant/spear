@@ -18,25 +18,25 @@ public class Game implements KeyListener {
     player = new Player(0, 240 - 16, 16, 16);
     stage = new Stage();
     floor = new LinearArena();
-    floor.addEntity(0, new Rectangle(0, 240 * Constants.SCALE,
-        320 * Constants.SCALE, 10 * Constants.SCALE)); // The ground.
+    floor.addEntity(0, new Entity(new Rectangle(0, 240 * Constants.SCALE,
+        320 * Constants.SCALE, 10 * Constants.SCALE))); // The ground.
     walker = new Walker(new Rectangle(200, 10, 16, 16), Direction.LEFT);
   }
 
   public void tick() {
     player.moveHorizontal();
-    floor.collide(player.getRect(), player.getHorizontalDirection(), player);
-    stage.collide(player.getRect(), player.getHorizontalDirection(), player);
+    floor.collide(player, player.getHorizontalDirection());
+    stage.collide(player, player.getHorizontalDirection());
     player.moveVertical();
-    floor.collide(player.getRect(), player.getVerticalDirection(), player);
-    stage.collide(player.getRect(), player.getVerticalDirection(), player);
+    floor.collide(player, player.getVerticalDirection());
+    stage.collide(player, player.getVerticalDirection());
 
     walker.moveHorizontal();
-    floor.collide(walker.getRect(), walker.getHorizontalDirection(), walker);
-    stage.collide(walker.getRect(), walker.getHorizontalDirection(), walker);
+    floor.collide(walker, walker.getHorizontalDirection());
+    stage.collide(walker, walker.getHorizontalDirection());
     walker.moveVertical();
-    floor.collide(walker.getRect(), walker.getVerticalDirection(), walker);
-    stage.collide(walker.getRect(), walker.getVerticalDirection(), walker);
+    floor.collide(walker, walker.getVerticalDirection());
+    stage.collide(walker, walker.getVerticalDirection());
   }
 
   public void render(Graphics g) {
