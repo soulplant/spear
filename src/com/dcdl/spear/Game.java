@@ -6,11 +6,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import com.dcdl.spear.collision.LinearArena;
+import com.dcdl.spear.collision.Arena.Direction;
 
 public class Game implements KeyListener {
   private final Player player;
   private final LinearArena floor;
   private final Stage stage;
+  private final Walker walker;
 
   public Game() {
     player = new Player(0, 240 - 16, 16, 16);
@@ -18,6 +20,7 @@ public class Game implements KeyListener {
     floor = new LinearArena();
     floor.addEntity(0, new Rectangle(0, 240 * Constants.SCALE,
         320 * Constants.SCALE, 10 * Constants.SCALE)); // The ground.
+    walker = new Walker(new Rectangle(200, 10, 16, 16), Direction.LEFT);
   }
 
   public void tick() {
@@ -27,11 +30,19 @@ public class Game implements KeyListener {
     player.moveVertical();
     floor.collide(player.getRect(), player.getVerticalDirection(), player);
     stage.collide(player.getRect(), player.getVerticalDirection(), player);
+
+    walker.moveHorizontal();
+    floor.collide(walker.getRect(), walker.getHorizontalDirection(), walker);
+    stage.collide(walker.getRect(), walker.getHorizontalDirection(), walker);
+    walker.moveVertical();
+    floor.collide(walker.getRect(), walker.getVerticalDirection(), walker);
+    stage.collide(walker.getRect(), walker.getVerticalDirection(), walker);
   }
 
   public void render(Graphics g) {
     g.clearRect(0, 0, 320, 240);  // TODO Remove magic numbers.
     stage.render(g);
+    walker.render(g);
     player.render(g);
   }
 

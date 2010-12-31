@@ -28,6 +28,10 @@ public interface Arena {
       default: return this;
       }
     }
+
+    public boolean isHorizontal() {
+      return this == LEFT || this == RIGHT;
+    }
   }
 
   void addEntity(int id, Rectangle rect);

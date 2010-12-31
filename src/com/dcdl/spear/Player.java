@@ -1,5 +1,6 @@
 package com.dcdl.spear;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -13,6 +14,7 @@ public class Player extends Entity {
 
   public void render(Graphics g) {
     Rectangle rect = getRect();
+    g.setColor(Color.ORANGE);
     g.fillRect(rect.x / Constants.SCALE, rect.y / Constants.SCALE, rect.width / Constants.SCALE, rect.height / Constants.SCALE);
   }
 
