@@ -97,5 +97,39 @@ public class Entity implements CollisionCallback {
     return rect.height;
   }
 
-  public void onGotBouncedIntoBy(Direction bounceDirection, Entity entity) { }
+  public void onGotBouncedIntoBy(Entity entity, Direction bounceDirection) { }
+
+  public void moveOutOf(Entity otherEntity, Direction direction) {
+    switch (direction) {
+    case UP:
+    case DOWN:
+      displace(0, -getDisplacement(otherEntity, direction));
+      break;
+    case LEFT:
+    case RIGHT:
+      displace(-getDisplacement(otherEntity, direction), 0);
+      break;
+    case NONE:
+      // Do nothing.
+      break;
+    }
+  }
+
+  /**
+   * @returns how many units we need to move in the specified direction to no
+   *          longer be overlapping with the given {@link Entity}.
+   */
+  private int getDisplacement(Entity stationary, Direction direction) {
+    switch (direction) {
+    case UP:
+      return (this.getY() + this.getHeight()) - stationary.getY();
+    case DOWN:
+      return - ((stationary.getY() + stationary.getHeight()) - this.getY());
+    case LEFT:
+      return (this.getX() + this.getWidth()) - stationary.getX();
+    case RIGHT:
+      return - ((stationary.getX() + stationary.getWidth()) - this.getX());
+    }
+    return 0;
+  }
 }

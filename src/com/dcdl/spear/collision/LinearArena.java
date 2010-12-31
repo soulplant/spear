@@ -23,40 +23,10 @@ public class LinearArena implements Arena {
       Rectangle intersection = otherEntity.intersection(entity);
       if (!intersection.isEmpty()) {
         Direction bounceDirection = direction.opposite();
-        moveRectOut(entity.getRect(), otherEntity.getRect(), bounceDirection);
+        entity.moveOutOf(otherEntity, bounceDirection);
         entity.onBounced(bounceDirection, otherEntity);
-        otherEntity.onGotBouncedIntoBy(bounceDirection, entity);
+        otherEntity.onGotBouncedIntoBy(entity, bounceDirection);
       }
-    }
-  }
-
-  private int getDisplacement(Rectangle moving, Rectangle stationary, Direction direction) {
-    switch (direction) {
-    case UP:
-      return (moving.y + moving.height) - stationary.y;
-    case DOWN:
-      return - ((stationary.y + stationary.height) - moving.y);
-    case LEFT:
-      return (moving.x + moving.width) - stationary.x;
-    case RIGHT:
-      return - ((stationary.x + stationary.width) - moving.x);
-    }
-    return 0;
-  }
-
-  private void moveRectOut(Rectangle moving, Rectangle stationary, Direction direction) {
-    switch (direction) {
-    case UP:
-    case DOWN:
-      moving.y -= getDisplacement(moving, stationary, direction);
-      break;
-    case LEFT:
-    case RIGHT:
-      moving.x -= getDisplacement(moving, stationary, direction);
-      break;
-    case NONE:
-      // Do nothing.
-      break;
     }
   }
 }
