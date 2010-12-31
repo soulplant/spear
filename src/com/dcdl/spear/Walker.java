@@ -15,11 +15,14 @@ public class Walker extends Entity {
   }
 
   private static final int WALKING_SPEED = 50;
+  private static final int WIDTH_PX = 16;
+  private static final int HEIGHT_PX = 16;
+
   private Direction facing;
   private final Listener listener;
 
-  public Walker(Rectangle rect, Direction facing, Listener listener) {
-    super(Util.scaleRect(rect, Constants.SCALE));
+  public Walker(int x, int y, Direction facing, Listener listener) {
+    super(Util.scaledRect(x, y, WIDTH_PX, HEIGHT_PX));
     this.facing = facing;
     this.listener = listener != null ? listener : new EmptyListener();
     assert(facing.isHorizontal());
@@ -45,8 +48,8 @@ public class Walker extends Entity {
   @Override
   public void render(Graphics g) {
     g.setColor(Color.BLACK);
-    Rectangle rect = getRect();
-    g.fillRect(rect.x / Constants.SCALE, rect.y / Constants.SCALE, rect.width / Constants.SCALE, rect.height / Constants.SCALE);
+    Rectangle rect = Util.scaleRect(getRect(), 1.0 / Constants.SCALE);
+    g.fillRect(rect.x, rect.y, rect.width, rect.height);
   }
 
   public void die() {

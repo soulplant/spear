@@ -56,6 +56,6 @@ public class Main {
         return new MouseMotionAdapter() {};
       }
     };
-    AppRunner.runApp(myApp, 60);
+    AppRunner.runApp(myApp, Constants.FPS);
   }
 }
