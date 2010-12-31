@@ -14,12 +14,15 @@ public class LinearArena implements Arena {
   @Override
   public void collide(Rectangle rect, CollisionDirection direction,
       CollisionCallback callback) {
+    if (direction == CollisionDirection.NONE) {
+      return;
+    }
     if (callback == null) {
       callback = new EmptyCollisionCallback();
     }
     for (Map.Entry<Integer, Rectangle> entry : entities.entrySet()) {
       Rectangle intersection = entry.getValue().intersection(rect);
-      if (!intersection.isEmpty() && direction != CollisionDirection.NONE) {
+      if (!intersection.isEmpty()) {
         moveRectOut(rect, entry.getValue(), direction.opposite());
         callback.onBounced(direction.opposite());
       }
