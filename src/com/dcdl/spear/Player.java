@@ -44,11 +44,15 @@ public class Player extends Entity {
   @Override
   public void onBounced(Direction direction, Entity otherEntity) {
     super.onBounced(direction, otherEntity);
-    if (otherEntity instanceof Walker && direction == Direction.UP) {
-      Walker walker = (Walker) otherEntity;
-      setYVelocity(-2 * Constants.SCALE);
-      walker.die();
-      client.onBounceOnWalker(walker);
+    if (otherEntity instanceof Walker) {
+      if (direction == Direction.UP) {
+        Walker walker = (Walker) otherEntity;
+        setYVelocity(-2 * Constants.SCALE);
+        walker.die();
+        client.killWalker(walker);
+      } else {
+        client.killPlayer(this);
+      }
     }
   }
 

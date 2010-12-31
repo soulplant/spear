@@ -77,7 +77,7 @@ public class Game implements KeyListener, GameClient {
   }
 
   @Override
-  public void onBounceOnWalker(Walker walker) {
+  public void killWalker(Walker walker) {
     enemyArena.removeEntity(walker);
   }
 
@@ -85,5 +85,10 @@ public class Game implements KeyListener, GameClient {
   public void spawnWalkerAt(Point spawnAt, Direction direction) {
     Walker walker = new Walker(spawnAt.x, spawnAt.y, direction, walkerSpawner);
     enemyArena.addEntity(walker);
+  }
+
+  @Override
+  public void killPlayer(Player player) {
+    playerArena.removeEntity(player);
   }
 }
