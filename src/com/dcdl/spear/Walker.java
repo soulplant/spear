@@ -17,9 +17,12 @@ public class Walker extends Entity {
   private static final int WALKING_SPEED = 50;
   private static final int WIDTH_PX = 16;
   private static final int HEIGHT_PX = 16;
+  private static final int FALL_RECOVERY_MS = 500;
 
   private Direction facing;
   private final Listener listener;
+  private int ticksSinceHitFloor = -1;
+  private boolean canMove = true;
 
   public Walker(int x, int y, Direction facing, Listener listener) {
     super(Util.scaledRect(x, y, WIDTH_PX, HEIGHT_PX));
@@ -30,8 +33,10 @@ public class Walker extends Entity {
 
   @Override
   public void moveHorizontal() {
-    if (isOnFloor()) {
+    if (isOnFloor() && canMove) {
       setXVelocity(WALKING_SPEED * (facing == Direction.LEFT ? -1 : 1));
+    } else {
+      setXVelocity(0);
     }
     super.moveHorizontal();
   }
@@ -54,5 +59,19 @@ public class Walker extends Entity {
 
   public void die() {
     listener.onDied();
+  }
+
+  @Override
+  protected void onHitFloor() {
+    ticksSinceHitFloor = 0;
+  }
+
+  @Override
+  public void tick() {
+    super.tick();
+    canMove = ticksSinceHitFloor == -1 || Util.ticksInMs(ticksSinceHitFloor) > FALL_RECOVERY_MS;
+    if (ticksSinceHitFloor != -1) {
+      ticksSinceHitFloor += 1;
+    }
   }
 }

@@ -29,6 +29,7 @@ public class LinearArena implements Arena {
 
   public void tick() {
     for (Entity entity : entities) {
+      entity.tick();
       entity.moveHorizontal();
       for (Arena arena : arenas) {
         arena.collide(entity, entity.getHorizontalDirection());

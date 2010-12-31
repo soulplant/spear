@@ -14,6 +14,7 @@ public class Entity implements CollisionCallback {
   private final Point velocity = new Point(0, 0);
   private final Rectangle rect;
   private boolean isOnFloor;
+  private boolean wasOnFloor = false;
 
   public Entity(Rectangle rect) {
     this.rect = rect;
@@ -54,8 +55,13 @@ public class Entity implements CollisionCallback {
   public void onBounced(Direction direction, Entity otherEntity) {
     if (direction == Direction.UP) {
       hitFloor();
+      if (!wasOnFloor) {
+        onHitFloor();
+      }
     }
   }
+
+  protected void onHitFloor() { }
 
   public Direction getHorizontalDirection() {
     return velocity.x < 0 ? Direction.LEFT : Direction.RIGHT;
@@ -139,5 +145,9 @@ public class Entity implements CollisionCallback {
     g.setColor(Color.WHITE);
     Rectangle rect = Util.scaleRect(getRect(), 1.0 / Constants.SCALE);
     g.fillRect(rect.x, rect.y, rect.width, rect.height);
+  }
+
+  public void tick() {
+    wasOnFloor = isOnFloor();
   }
 }
