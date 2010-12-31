@@ -1,5 +1,7 @@
 package com.dcdl.spear;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -7,7 +9,7 @@ import com.dcdl.spear.collision.Arena.CollisionCallback;
 import com.dcdl.spear.collision.Arena.Direction;
 
 public class Entity implements CollisionCallback {
-  private static final int MAX_FALL_SPEED = 1000;
+  private static final int MAX_FALL_SPEED = 200;
   private static final int GRAVITY = Constants.SCALE / 10;
   private final Point velocity = new Point(0, 0);
   private final Rectangle rect;
@@ -131,5 +133,11 @@ public class Entity implements CollisionCallback {
       return - ((stationary.getX() + stationary.getWidth()) - this.getX());
     }
     return 0;
+  }
+
+  public void render(Graphics g) {
+    g.setColor(Color.WHITE);
+    Rectangle rect = Util.scaleRect(getRect(), 1.0 / Constants.SCALE);
+    g.fillRect(rect.x, rect.y, rect.width, rect.height);
   }
 }

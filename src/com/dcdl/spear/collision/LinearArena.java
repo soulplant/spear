@@ -1,5 +1,6 @@
 package com.dcdl.spear.collision;
 
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.List;
 import com.dcdl.spear.Entity;
 
 public class LinearArena implements Arena {
+  // TODO Make these sets?
   private final List<Entity> entities = new ArrayList<Entity>();
+  private final List<Entity> toRemove = new ArrayList<Entity>();
   private final List<Arena> arenas = new ArrayList<Arena>();
 
   public void addEntity(Entity entity) {
@@ -16,6 +19,12 @@ public class LinearArena implements Arena {
 
   public void addArena(Arena arena) {
     arenas.add(arena);
+  }
+
+  public void render(Graphics g) {
+    for (Entity entity : entities) {
+      entity.render(g);
+    }
   }
 
   public void tick() {
@@ -30,6 +39,7 @@ public class LinearArena implements Arena {
         arena.collide(entity, entity.getVerticalDirection());
       }
     }
+    entities.removeAll(toRemove);
   }
 
   @Override
@@ -46,5 +56,9 @@ public class LinearArena implements Arena {
         otherEntity.onGotBouncedIntoBy(entity, bounceDirection);
       }
     }
+  }
+
+  public void removeEntity(Entity entity) {
+    toRemove.add(entity);
   }
 }

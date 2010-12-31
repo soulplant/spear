@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 import com.dcdl.spear.collision.LinearArena;
 import com.dcdl.spear.collision.Arena.Direction;
 
-public class Game implements KeyListener {
+public class Game implements KeyListener, GameClient {
   private final Player player;
   private final LinearArena floor;
   private final Stage stage;
@@ -17,12 +17,12 @@ public class Game implements KeyListener {
   private final LinearArena enemyArena;
 
   public Game() {
-    player = new Player(0, 240 - 16);
+    player = new Player(this, 0, 240 - 16);
     stage = new Stage();
     floor = new LinearArena();
     floor.addEntity(new Entity(Util.scaleRect(new Rectangle(0, 240, 320, 10),
         Constants.SCALE))); // The ground.
-    walker = new Walker(new Rectangle(200, 10, 16, 16), Direction.LEFT);
+    walker = new Walker(new Rectangle(200, 10, 16, 16), Direction.LEFT, null);
 
     playerArena = new LinearArena();
     enemyArena = new LinearArena();
@@ -45,8 +45,8 @@ public class Game implements KeyListener {
   public void render(Graphics g) {
     g.clearRect(0, 0, 320, 240);  // TODO Remove magic numbers.
     stage.render(g);
-    walker.render(g);
-    player.render(g);
+    enemyArena.render(g);
+    playerArena.render(g);
   }
 
   private void onKey(KeyEvent e, boolean pressed) {
@@ -75,5 +75,10 @@ public class Game implements KeyListener {
 
   @Override
   public void keyTyped(KeyEvent e) {
+  }
+
+  @Override
+  public void onBounceOnWalker(Walker walker) {
+    enemyArena.removeEntity(walker);
   }
 }

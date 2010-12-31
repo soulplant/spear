@@ -7,12 +7,21 @@ import java.awt.Rectangle;
 import com.dcdl.spear.collision.Arena.Direction;
 
 public class Walker extends Entity {
+  public interface Listener {
+    void onDied();
+  }
+  public class EmptyListener implements Listener {
+    @Override public void onDied() { }
+  }
+
   private static final int WALKING_SPEED = 50;
   private Direction facing;
+  private final Listener listener;
 
-  public Walker(Rectangle rect, Direction facing) {
+  public Walker(Rectangle rect, Direction facing, Listener listener) {
     super(Util.scaleRect(rect, Constants.SCALE));
     this.facing = facing;
+    this.listener = listener != null ? listener : new EmptyListener();
     assert(facing.isHorizontal());
   }
 
@@ -33,9 +42,14 @@ public class Walker extends Entity {
     }
   }
 
+  @Override
   public void render(Graphics g) {
     g.setColor(Color.BLACK);
     Rectangle rect = getRect();
     g.fillRect(rect.x / Constants.SCALE, rect.y / Constants.SCALE, rect.width / Constants.SCALE, rect.height / Constants.SCALE);
+  }
+
+  public void die() {
+    listener.onDied();
   }
 }
