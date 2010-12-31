@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import com.dcdl.spear.collision.Arena.CollisionCallback;
-import com.dcdl.spear.collision.Arena.CollisionDirection;
+import com.dcdl.spear.collision.Arena.Direction;
 
 public class Entity implements CollisionCallback {
   private static final int MAX_FALL_SPEED = 1000;
@@ -45,18 +45,18 @@ public class Entity implements CollisionCallback {
   }
 
   @Override
-  public void onBounced(CollisionDirection collisionDirection) {
-    if (collisionDirection == CollisionDirection.UP) {
+  public void onBounced(Direction direction) {
+    if (direction == Direction.UP) {
       hitFloor();
     }
   }
 
-  public CollisionDirection getHorizontalDirection() {
-    return velocity.x < 0 ? CollisionDirection.LEFT : CollisionDirection.RIGHT;
+  public Direction getHorizontalDirection() {
+    return velocity.x < 0 ? Direction.LEFT : Direction.RIGHT;
   }
 
-  public CollisionDirection getVerticalDirection() {
-    return velocity.y < 0 ? CollisionDirection.UP : CollisionDirection.DOWN;
+  public Direction getVerticalDirection() {
+    return velocity.y < 0 ? Direction.UP : Direction.DOWN;
   }
 
   private void hitFloor() {

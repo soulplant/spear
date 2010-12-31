@@ -4,22 +4,22 @@ import java.awt.Rectangle;
 
 public interface Arena {
   public interface CollisionCallback {
-    void onBounced(CollisionDirection collisionDirection);
+    void onBounced(Direction direction);
   }
 
   public class EmptyCollisionCallback implements CollisionCallback {
     @Override
-    public void onBounced(CollisionDirection collisionDirection) { }
+    public void onBounced(Direction direction) { }
   }
 
-  public enum CollisionDirection {
+  public enum Direction {
     UP,
     DOWN,
     LEFT,
     RIGHT,
     NONE
     ;
-    public CollisionDirection opposite() {
+    public Direction opposite() {
       switch (this) {
       case UP: return DOWN;
       case DOWN: return UP;
@@ -31,5 +31,5 @@ public interface Arena {
   }
 
   void addEntity(int id, Rectangle rect);
-  void collide(Rectangle rect, CollisionDirection direction, CollisionCallback callback);
+  void collide(Rectangle rect, Direction direction, CollisionCallback callback);
 }

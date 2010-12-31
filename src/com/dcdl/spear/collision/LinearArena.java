@@ -12,9 +12,9 @@ public class LinearArena implements Arena {
   }
 
   @Override
-  public void collide(Rectangle rect, CollisionDirection direction,
+  public void collide(Rectangle rect, Direction direction,
       CollisionCallback callback) {
-    if (direction == CollisionDirection.NONE) {
+    if (direction == Direction.NONE) {
       return;
     }
     if (callback == null) {
@@ -30,7 +30,7 @@ public class LinearArena implements Arena {
   }
 
 
-  private int getDisplacement(Rectangle moving, Rectangle stationary, CollisionDirection direction) {
+  private int getDisplacement(Rectangle moving, Rectangle stationary, Direction direction) {
     switch (direction) {
     case UP:
       return (moving.y + moving.height) - stationary.y;
@@ -44,7 +44,7 @@ public class LinearArena implements Arena {
     return 0;
   }
 
-  private void moveRectOut(Rectangle moving, Rectangle stationary, CollisionDirection direction) {
+  private void moveRectOut(Rectangle moving, Rectangle stationary, Direction direction) {
     switch (direction) {
     case UP:
     case DOWN:

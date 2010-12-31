@@ -9,7 +9,7 @@ import java.util.List;
 import com.dcdl.spear.collision.Arena;
 import com.dcdl.spear.collision.LinearArena;
 import com.dcdl.spear.collision.Arena.CollisionCallback;
-import com.dcdl.spear.collision.Arena.CollisionDirection;
+import com.dcdl.spear.collision.Arena.Direction;
 
 public class Stage {
   private class Block {
@@ -35,6 +35,15 @@ public class Stage {
     addBlock(3, 0);
     addBlock(5, 0);
     addBlock(5, 1);
+    addBlock(6, 0);
+    addBlock(8, 0);
+    addBlock(8, 1);
+    addBlock(14, 0);
+    for (int x = 0; x < 5; x++) {
+      for (int y = 0; y < 2; y++) {
+        addBlock(15 + x, y);
+      }
+    }
   }
 
   public void render(Graphics g) {
@@ -55,7 +64,7 @@ public class Stage {
     arena.addEntity(block.id, rect);
   }
 
-  public void collide(Rectangle rect, CollisionDirection collisionDirection, CollisionCallback callback) {
+  public void collide(Rectangle rect, Direction collisionDirection, CollisionCallback callback) {
     arena.collide(rect, collisionDirection, callback);
   }
 }

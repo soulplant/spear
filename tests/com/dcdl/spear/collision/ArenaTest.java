@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 import junit.framework.TestCase;
 
-import com.dcdl.spear.collision.Arena.CollisionDirection;
+import com.dcdl.spear.collision.Arena.Direction;
 
 public class ArenaTest extends TestCase {
   private LinearArena arena;
@@ -21,7 +21,7 @@ public class ArenaTest extends TestCase {
     arena.addEntity(0, ground);
 
     player.y += 2;
-    arena.collide(player, CollisionDirection.DOWN, null);
+    arena.collide(player, Direction.DOWN, null);
 
     assertEquals(-10, player.y);
   }
@@ -35,10 +35,10 @@ public class ArenaTest extends TestCase {
     arena.addEntity(1, wall);
 
     player.x += 2;
-    arena.collide(player, CollisionDirection.RIGHT, null);
+    arena.collide(player, Direction.RIGHT, null);
 
     player.y += 2;
-    arena.collide(player, CollisionDirection.DOWN, null);
+    arena.collide(player, Direction.DOWN, null);
 
     assertEquals(5, player.x);
     assertEquals(5, player.y);
