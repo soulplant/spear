@@ -15,9 +15,9 @@ public class Player extends Entity {
   }
 
   public void render(Graphics g) {
-    Rectangle rect = getRect();
+    Rectangle rect = Util.scaleRect(getRect(), 1.0 / Constants.SCALE);
     g.setColor(Color.ORANGE);
-    g.fillRect(rect.x / Constants.SCALE, rect.y / Constants.SCALE, rect.width / Constants.SCALE, rect.height / Constants.SCALE);
+    g.fillRect(rect.x, rect.y, rect.width, rect.height);
   }
 
   public void left(boolean pressed) {
