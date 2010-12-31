@@ -1,16 +1,35 @@
 package com.dcdl.spear.collision;
 
 import java.awt.Rectangle;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dcdl.spear.Entity;
 
 public class LinearArena implements Arena {
-  private final Map<Integer, Entity> entities = new HashMap<Integer, Entity>();
+  private final List<Entity> entities = new ArrayList<Entity>();
+  private final List<Arena> arenas = new ArrayList<Arena>();
 
-  public void addEntity(int id, Entity entity) {
-    entities.put(id, entity);
+  public void addEntity(Entity entity) {
+    entities.add(entity);
+  }
+
+  public void addArena(Arena arena) {
+    arenas.add(arena);
+  }
+
+  public void tick() {
+    for (Entity entity : entities) {
+      entity.moveHorizontal();
+      for (Arena arena : arenas) {
+        arena.collide(entity, entity.getHorizontalDirection());
+      }
+
+      entity.moveVertical();
+      for (Arena arena : arenas) {
+        arena.collide(entity, entity.getVerticalDirection());
+      }
+    }
   }
 
   @Override
@@ -18,8 +37,7 @@ public class LinearArena implements Arena {
     if (direction == Direction.NONE) {
       return;
     }
-    for (Map.Entry<Integer, Entity> entry : entities.entrySet()) {
-      Entity otherEntity = entry.getValue();
+    for (Entity otherEntity : entities) {
       Rectangle intersection = otherEntity.intersection(entity);
       if (!intersection.isEmpty()) {
         Direction bounceDirection = direction.opposite();

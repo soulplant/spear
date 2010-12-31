@@ -11,18 +11,14 @@ import com.dcdl.spear.collision.LinearArena;
 
 public class Stage implements Arena {
   private class Block extends Entity {
-    private final int id;
-
-    public Block(int id, int x, int y, Entity rect) {
+    public Block(int x, int y, Entity rect) {
       super(Util.scaleRect(new Rectangle(x * 16, (240 - (y + 1) * 16), 16, 16),
           Constants.SCALE));
-      this.id = id;
     }
   }
 
   private final LinearArena arena = new LinearArena();
   private final List<Block> blocks = new ArrayList<Block>();
-  private int blockId = 0;
 
   public Stage() {
     addBlock(1, 0);
@@ -49,12 +45,11 @@ public class Stage implements Arena {
   }
 
   private void addBlock(int x, int y) {
-    Entity rect = new Entity(new Rectangle(x * 16 * Constants.SCALE,
-        (240 - (y + 1) * 16) * Constants.SCALE, 16 * Constants.SCALE,
-        16 * Constants.SCALE));
-    Block block = new Block(blockId++, x, y, rect);
+    Entity rect = new Entity(Util.scaleRect(new Rectangle(x * 16,
+        240 - (y + 1) * 16, 16, 16), Constants.SCALE));
+    Block block = new Block(x, y, rect);
     blocks.add(block);
-    arena.addEntity(block.id, rect);
+    arena.addEntity(rect);
   }
 
   public void collide(Entity entity, Direction collisionDirection) {

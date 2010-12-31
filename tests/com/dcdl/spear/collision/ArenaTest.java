@@ -19,7 +19,7 @@ public class ArenaTest extends TestCase {
     Entity player = makeEntity(0, -10, 10, 10);
     Entity ground = makeEntity(0, 0, 100, 100);
 
-    arena.addEntity(0, ground);
+    arena.addEntity(ground);
 
     player.displace(0, 2);
     arena.collide(player, Direction.DOWN);
@@ -32,8 +32,8 @@ public class ArenaTest extends TestCase {
     Entity ground = makeEntity(0, 10, 100, 100);
     Entity wall = makeEntity(10, 0, 10, 10);
 
-    arena.addEntity(0, ground);
-    arena.addEntity(1, wall);
+    arena.addEntity(ground);
+    arena.addEntity(wall);
 
     player.displace(2, 0);
     arena.collide(player, Direction.RIGHT);
