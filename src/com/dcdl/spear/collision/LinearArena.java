@@ -30,14 +30,16 @@ public class LinearArena implements Arena {
   public void tick() {
     for (Entity entity : entities) {
       entity.tick();
-      entity.moveHorizontal();
-      for (Arena arena : arenas) {
-        arena.collide(entity, entity.getHorizontalDirection());
+      if (entity.moveHorizontal()) {
+        for (Arena arena : arenas) {
+          arena.collide(entity, entity.getHorizontalDirection());
+        }
       }
 
-      entity.moveVertical();
-      for (Arena arena : arenas) {
-        arena.collide(entity, entity.getVerticalDirection());
+      if (entity.moveVertical()) {
+        for (Arena arena : arenas) {
+          arena.collide(entity, entity.getVerticalDirection());
+        }
       }
     }
     entities.removeAll(toRemove);
@@ -52,7 +54,6 @@ public class LinearArena implements Arena {
       Rectangle intersection = otherEntity.intersection(entity);
       if (!intersection.isEmpty()) {
         Direction bounceDirection = direction.opposite();
-        entity.moveOutOf(otherEntity, bounceDirection);
         entity.onBounced(bounceDirection, otherEntity);
         otherEntity.onGotBouncedIntoBy(entity, bounceDirection);
       }

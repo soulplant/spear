@@ -8,4 +8,5 @@ public interface GameClient {
   void spawnWalkerAt(Point spawnAt, Direction direction);
   void killWalker(Walker walker);
   void killPlayer(Player player);
+  void shootSpear(Point pos, Direction direction);
 }

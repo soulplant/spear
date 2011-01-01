@@ -2,6 +2,7 @@ package com.dcdl.spear;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import com.dcdl.spear.collision.Arena.Direction;
@@ -16,6 +17,7 @@ public class Player extends Entity {
   private boolean leftPressed = false;
   private boolean rightPressed = false;
   private final GameClient client;
+  private Direction facing = Direction.RIGHT;
 
   public Player(GameClient client, int x, int y) {
     super(Util.scaleRect(new Rectangle(x, y, WIDTH_PX, HEIGHT_PX), Constants.SCALE));
@@ -47,13 +49,18 @@ public class Player extends Entity {
 
   @Override
   public void onBounced(Direction direction, Entity otherEntity) {
+    if (otherEntity instanceof Spear) {
+      if (direction == Direction.UP && !isOnFloor()) {
+        bounceOut(direction, otherEntity);
+      }
+      return;
+    }
     super.onBounced(direction, otherEntity);
     if (otherEntity instanceof Walker) {
       if (direction == Direction.UP) {
         Walker walker = (Walker) otherEntity;
         setYVelocity(-JUMP_SPEED);
         walker.die();
-        client.killWalker(walker);
       } else {
         client.killPlayer(this);
       }
@@ -64,10 +71,20 @@ public class Player extends Entity {
     int dx = 0;
     if (leftPressed && !rightPressed) {
       dx = -WALK_SPEED;
+      facing = Direction.LEFT;
     }
     if (rightPressed && !leftPressed) {
       dx = WALK_SPEED;
+      facing = Direction.RIGHT;
     }
     setXVelocity(dx);
+  }
+
+  public void shoot(boolean pressed) {
+    if (pressed) {
+      int x = facing.isLeft() ? getLeftSide() - 2 * Constants.SCALE : getRightSide() + 2 * Constants.SCALE;
+      Point spearPos = new Point(x, getY() + 2 * Constants.SCALE);
+      client.shootSpear(spearPos, facing);
+    }
   }
 }

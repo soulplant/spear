@@ -24,27 +24,34 @@ public class Walker extends Entity {
   private final Listener listener;
   private int ticksSinceHitFloor = -1;
   private boolean canMove = true;
+  private final GameClient client;
 
-  public Walker(int x, int y, Direction facing, Listener listener) {
+  public Walker(GameClient client, int x, int y, Direction facing, Listener listener) {
     super(Util.scaledRect(x, y, WIDTH_PX, HEIGHT_PX));
+    this.client = client;
     this.facing = facing;
     this.listener = listener != null ? listener : new EmptyListener();
     assert(facing.isHorizontal());
   }
 
   @Override
-  public void moveHorizontal() {
+  public boolean moveHorizontal() {
     if (isOnFloor() && canMove) {
       setXVelocity(WALKING_SPEED * (facing == Direction.LEFT ? -1 : 1));
     } else {
       setXVelocity(0);
     }
-    super.moveHorizontal();
+    return super.moveHorizontal();
   }
 
   @Override
   public void onBounced(Direction direction, Entity otherEntity) {
-    super.onBounced(direction, otherEntity);
+    if (otherEntity instanceof Spear) {
+      if (direction == Direction.UP && isOnFloor()) {
+        return;
+      }
+    }
+    bounceOut(direction, otherEntity);
     if (direction.isHorizontal()) {
       facing = direction;
       setXVelocity(-getXVelocity());
@@ -59,6 +66,7 @@ public class Walker extends Entity {
   }
 
   public void die() {
+    client.killWalker(this);
     listener.onDied();
   }
 

@@ -5,8 +5,8 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import com.dcdl.spear.collision.LinearArena;
 import com.dcdl.spear.collision.Arena.Direction;
+import com.dcdl.spear.collision.LinearArena;
 
 public class Game implements KeyListener, GameClient {
   private final Player player;
@@ -15,6 +15,7 @@ public class Game implements KeyListener, GameClient {
   private final LinearArena playerArena;
   private final LinearArena enemyArena;
   private final WalkerSpawner walkerSpawner;
+  private final LinearArena spearArena;
 
   public Game() {
     player = new Player(this, 0, 240 - 16);
@@ -25,19 +26,26 @@ public class Game implements KeyListener, GameClient {
 
     playerArena = new LinearArena();
     enemyArena = new LinearArena();
+    spearArena = new LinearArena();
 
     playerArena.addEntity(player);
-    playerArena.addArena(enemyArena);
     playerArena.addArena(stage);
     playerArena.addArena(floor);
+    playerArena.addArena(spearArena);
+    playerArena.addArena(enemyArena);
 
     enemyArena.addArena(stage);
     enemyArena.addArena(floor);
+    enemyArena.addArena(spearArena);
+
+    spearArena.addArena(enemyArena);
+    spearArena.addArena(stage);
   }
 
   public void tick() {
     walkerSpawner.tick();
     enemyArena.tick();
+    spearArena.tick();
     playerArena.tick();
   }
 
@@ -45,6 +53,7 @@ public class Game implements KeyListener, GameClient {
     g.clearRect(0, 0, 320, 240);  // TODO Remove magic numbers.
     stage.render(g);
     enemyArena.render(g);
+    spearArena.render(g);
     playerArena.render(g);
   }
 
@@ -52,6 +61,9 @@ public class Game implements KeyListener, GameClient {
     switch (e.getKeyCode()) {
     case KeyEvent.VK_X:
       player.jump(pressed);
+      break;
+    case KeyEvent.VK_C:
+      player.shoot(pressed);
       break;
     case KeyEvent.VK_LEFT:
       player.left(pressed);
@@ -83,12 +95,18 @@ public class Game implements KeyListener, GameClient {
 
   @Override
   public void spawnWalkerAt(Point spawnAt, Direction direction) {
-    Walker walker = new Walker(spawnAt.x, spawnAt.y, direction, walkerSpawner);
+    Walker walker = new Walker(this, spawnAt.x, spawnAt.y, direction, walkerSpawner);
     enemyArena.addEntity(walker);
   }
 
   @Override
   public void killPlayer(Player player) {
     playerArena.removeEntity(player);
+  }
+
+  @Override
+  public void shootSpear(Point pos, Direction direction) {
+    Spear spear = new Spear(pos, direction);
+    spearArena.addEntity(spear);
   }
 }

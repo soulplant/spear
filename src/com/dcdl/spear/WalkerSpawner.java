@@ -42,6 +42,7 @@ public class WalkerSpawner implements Walker.Listener {
 
   @Override
   public void onDied() {
+    System.out.println("Walker died.");
     walkersAlive -= 1;
   }
 }

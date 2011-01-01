@@ -17,9 +17,14 @@ public class Entity implements CollisionCallback {
   private final Rectangle rect;
   private boolean isOnFloor;
   private boolean wasOnFloor = false;
+  private boolean isGravityEnabled = true;
 
   public Entity(Rectangle rect) {
     this.rect = rect;
+  }
+
+  public void setGravityEnabled(boolean isGravityEnabled) {
+    this.isGravityEnabled = isGravityEnabled;
   }
 
   public int getXVelocity() {
@@ -38,15 +43,19 @@ public class Entity implements CollisionCallback {
     velocity.y = dy;
   }
 
-  public void moveHorizontal() {
+  public boolean moveHorizontal() {
     rect.x += velocity.x;
+    return velocity.x != 0;
   }
 
-  public void moveVertical() {
-    velocity.y += GRAVITY;
+  public boolean moveVertical() {
+    if (isGravityEnabled) {
+      velocity.y += GRAVITY;
+    }
     velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
     rect.y += velocity.y;
     isOnFloor = false;
+    return velocity.y != 0;
   }
 
   public boolean isOnFloor() {
@@ -55,6 +64,11 @@ public class Entity implements CollisionCallback {
 
   @Override
   public void onBounced(Direction direction, Entity otherEntity) {
+    bounceOut(direction, otherEntity);
+  }
+
+  protected void bounceOut(Direction direction, Entity otherEntity) {
+    moveOutOf(otherEntity, direction);
     if (direction == Direction.UP) {
       hitFloor();
       if (!wasOnFloor) {
@@ -151,5 +165,13 @@ public class Entity implements CollisionCallback {
 
   public void tick() {
     wasOnFloor = isOnFloor();
+  }
+
+  public int getLeftSide() {
+    return getX();
+  }
+
+  public int getRightSide() {
+    return getX() + getWidth();
   }
 }
