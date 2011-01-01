@@ -50,7 +50,7 @@ public class Player extends Entity {
   @Override
   public void onBounced(Direction direction, Entity otherEntity) {
     if (otherEntity instanceof Spear) {
-      if (direction == Direction.UP && !isOnFloor()) {
+      if (direction == Direction.UP && !isOnFloor() && getDisplacement(otherEntity, direction) < 2 * Constants.SCALE) {
         bounceOut(direction, otherEntity);
       }
       return;

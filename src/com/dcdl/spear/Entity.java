@@ -143,7 +143,7 @@ public class Entity implements CollisionCallback {
    * @returns how many units we need to move in the specified direction to no
    *          longer be overlapping with the given {@link Entity}.
    */
-  private int getDisplacement(Entity stationary, Direction direction) {
+  public int getDisplacement(Entity stationary, Direction direction) {
     switch (direction) {
     case UP:
       return (this.getY() + this.getHeight()) - stationary.getY();
