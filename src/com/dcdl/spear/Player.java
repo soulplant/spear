@@ -9,6 +9,8 @@ import com.dcdl.spear.collision.Arena.Direction;
 public class Player extends Entity {
   private static final int WIDTH_PX = 16;
   private static final int HEIGHT_PX = 16;
+  private static final int WALK_SPEED = 50;
+  private static final int JUMP_SPEED = 200;
   private boolean leftPressed = false;
   private boolean rightPressed = false;
   private final GameClient client;
@@ -37,7 +39,7 @@ public class Player extends Entity {
 
   public void jump(boolean pressed) {
     if (isOnFloor() && pressed) {
-      setYVelocity(-2 * Constants.SCALE);
+      setYVelocity(-JUMP_SPEED);
     }
   }
 
@@ -47,7 +49,7 @@ public class Player extends Entity {
     if (otherEntity instanceof Walker) {
       if (direction == Direction.UP) {
         Walker walker = (Walker) otherEntity;
-        setYVelocity(-2 * Constants.SCALE);
+        setYVelocity(-JUMP_SPEED);
         walker.die();
         client.killWalker(walker);
       } else {
@@ -59,10 +61,10 @@ public class Player extends Entity {
   private void updateXVelocity() {
     int dx = 0;
     if (leftPressed && !rightPressed) {
-      dx = -1 * Constants.SCALE;
+      dx = -WALK_SPEED;
     }
     if (rightPressed && !leftPressed) {
-      dx = 1 * Constants.SCALE;
+      dx = WALK_SPEED;
     }
     setXVelocity(dx);
   }

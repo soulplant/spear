@@ -10,7 +10,7 @@ import com.dcdl.spear.collision.Arena.Direction;
 
 public class Entity implements CollisionCallback {
   private static final int MAX_FALL_SPEED = 200;
-  private static final int GRAVITY = Constants.SCALE / 10;
+  private static final int GRAVITY = 10;
   private final Point velocity = new Point(0, 0);
   private final Rectangle rect;
   private boolean isOnFloor;
