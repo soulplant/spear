@@ -18,6 +18,7 @@ public class Player extends Entity {
   private boolean rightPressed = false;
   private final GameClient client;
   private Direction facing = Direction.RIGHT;
+  private boolean jumpButtonPressed = false;
 
   private static final int FRICTION_PPS = 3;
   private static final int FRICTION = Util.pps2cppf(FRICTION_PPS);
@@ -45,6 +46,7 @@ public class Player extends Entity {
   }
 
   public void jump(boolean pressed) {
+    jumpButtonPressed = pressed;
     if (isOnFloor() && pressed) {
       setYVelocity(-JUMP_SPEED);
     }
@@ -62,7 +64,11 @@ public class Player extends Entity {
     if (otherEntity instanceof Walker) {
       if (direction == Direction.UP) {
         Walker walker = (Walker) otherEntity;
-        setYVelocity(-JUMP_SPEED);
+        if (jumpButtonPressed) {
+          setYVelocity((int) (-JUMP_SPEED * 1.5));
+        } else {
+          setYVelocity(-JUMP_SPEED / 2);
+        }
         walker.die();
       } else {
         client.killPlayer(this);
