@@ -9,7 +9,7 @@ import com.dcdl.spear.collision.Arena.Direction;
 public class Spear extends Entity {
   private static final int WIDTH_PX = 14;
   private static final int HEIGHT_PX = 2;
-  private static final int SPEED_PPS = 48;
+  private static final int SPEED_PPS = 96;
 
   public Spear(Point position, Direction direction) {
     super(new Rectangle(position.x, position.y, WIDTH_PX * Constants.SCALE,

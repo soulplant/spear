@@ -89,7 +89,6 @@ public class Entity implements CollisionCallback {
 
   private void hitFloor() {
     isOnFloor = true;
-    velocity.y = 0;
   }
 
   public Rectangle getRect() {
@@ -128,10 +127,12 @@ public class Entity implements CollisionCallback {
     case UP:
     case DOWN:
       displace(0, -getDisplacement(otherEntity, direction));
+      setYVelocity(0);
       break;
     case LEFT:
     case RIGHT:
       displace(-getDisplacement(otherEntity, direction), 0);
+      setXVelocity(0);
       break;
     case NONE:
       // Do nothing.

@@ -10,14 +10,19 @@ import com.dcdl.spear.collision.Arena.Direction;
 public class Player extends Entity {
   private static final int WIDTH_PX = 16;
   private static final int HEIGHT_PX = 16;
-  private static final int WALK_SPEED_PPS = 30;
+  private static final int WALK_SPEED_PPS = 60;
   private static final int WALK_SPEED = Util.pps2cppf(WALK_SPEED_PPS);
-  private static final int JUMP_SPEED_PPS = 120;
+  private static final int JUMP_SPEED_PPS = 140;
   private static final int JUMP_SPEED = Util.pps2cppf(JUMP_SPEED_PPS);
   private boolean leftPressed = false;
   private boolean rightPressed = false;
   private final GameClient client;
   private Direction facing = Direction.RIGHT;
+
+  private static final int FRICTION_PPS = 3;
+  private static final int FRICTION = Util.pps2cppf(FRICTION_PPS);
+  private static final int WALKING_ACC_PPS = 3;
+  private static final int WALKING_ACC = Util.pps2cppf(WALKING_ACC_PPS);
 
   public Player(GameClient client, int x, int y) {
     super(Util.scaleRect(new Rectangle(x, y, WIDTH_PX, HEIGHT_PX), Constants.SCALE));
@@ -33,12 +38,10 @@ public class Player extends Entity {
 
   public void left(boolean pressed) {
     this.leftPressed = pressed;
-    updateXVelocity();
   }
 
   public void right(boolean pressed) {
     this.rightPressed = pressed;
-    updateXVelocity();
   }
 
   public void jump(boolean pressed) {
@@ -67,16 +70,25 @@ public class Player extends Entity {
     }
   }
 
+  @Override
+  public void tick() {
+    updateXVelocity();
+  }
+
   private void updateXVelocity() {
-    int dx = 0;
+    int dx = getXVelocity();
     if (leftPressed && !rightPressed) {
-      dx = -WALK_SPEED;
+      dx -= WALKING_ACC * (dx > 0 ? 2 : 1);
       facing = Direction.LEFT;
     }
     if (rightPressed && !leftPressed) {
-      dx = WALK_SPEED;
+      dx += WALKING_ACC * (dx < 0 ? 2 : 1);
       facing = Direction.RIGHT;
     }
+    if (!leftPressed && !rightPressed) {
+      dx = Util.shrink(dx, Util.pps2cppf(FRICTION));
+    }
+    dx = Util.clampAbs(dx, WALK_SPEED);
     setXVelocity(dx);
   }
 

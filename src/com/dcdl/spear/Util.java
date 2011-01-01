@@ -35,4 +35,18 @@ public class Util {
   public static int pps2cppf(int pps) {
     return (int) (100.0 / Constants.FPS * pps);
   }
+
+  /**
+   * Moves x closer to zero by n.
+   */
+  public static int shrink(int x, int n) {
+    if (n > Math.abs(x)) {
+      return 0;
+    }
+    return x < 0 ? x + n : x - n;
+  }
+
+  public static int clampAbs(int x, int n) {
+    return Math.min(Math.max(x, -n), n);
+  }
 }
