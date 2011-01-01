@@ -9,8 +9,10 @@ import com.dcdl.spear.collision.Arena.Direction;
 public class Player extends Entity {
   private static final int WIDTH_PX = 16;
   private static final int HEIGHT_PX = 16;
-  private static final int WALK_SPEED = 50;
-  private static final int JUMP_SPEED = 200;
+  private static final int WALK_SPEED_PPS = 30;
+  private static final int WALK_SPEED = Util.pps2cppf(WALK_SPEED_PPS);
+  private static final int JUMP_SPEED_PPS = 120;
+  private static final int JUMP_SPEED = Util.pps2cppf(JUMP_SPEED_PPS);
   private boolean leftPressed = false;
   private boolean rightPressed = false;
   private final GameClient client;

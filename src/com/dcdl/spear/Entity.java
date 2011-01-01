@@ -9,8 +9,10 @@ import com.dcdl.spear.collision.Arena.CollisionCallback;
 import com.dcdl.spear.collision.Arena.Direction;
 
 public class Entity implements CollisionCallback {
-  private static final int MAX_FALL_SPEED = 200;
-  private static final int GRAVITY = 10;
+  private static final int MAX_FALL_SPEED_PPS = 120;
+  private static final int MAX_FALL_SPEED = Util.pps2cppf(MAX_FALL_SPEED_PPS);
+  private static final int GRAVITY_PPS = 6;
+  private static final int GRAVITY = Util.pps2cppf(GRAVITY_PPS);
   private final Point velocity = new Point(0, 0);
   private final Rectangle rect;
   private boolean isOnFloor;

@@ -14,7 +14,8 @@ public class Walker extends Entity {
     @Override public void onDied() { }
   }
 
-  private static final int WALKING_SPEED = 50;
+  private static final int WALKING_SPEED_PPS = 30;
+  private static final int WALKING_SPEED = Util.pps2cppf(WALKING_SPEED_PPS);
   private static final int WIDTH_PX = 16;
   private static final int HEIGHT_PX = 16;
   private static final int FALL_RECOVERY_MS = 500;

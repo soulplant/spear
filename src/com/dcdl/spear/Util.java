@@ -28,4 +28,11 @@ public class Util {
   public static Rectangle scaledRect(int x, int y, int width, int height) {
     return scaleRect(new Rectangle(x, y, width, height), Constants.SCALE);
   }
+
+  /**
+   * Pixels per second to centi-pixels per frame.
+   */
+  public static int pps2cppf(int pps) {
+    return (int) (100.0 / Constants.FPS * pps);
+  }
 }
