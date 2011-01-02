@@ -12,11 +12,20 @@ public class Spear extends Entity {
   private static final int SPEED_PPS = 96;
 
   public Spear(Point position, Direction direction) {
-    super(new Rectangle(position.x, position.y, WIDTH_PX * Constants.SCALE,
-        HEIGHT_PX * Constants.SCALE));
+    super(startingRectFromPos(position, direction));
     setGravityEnabled(false);
 
     setXVelocity(SPEED_PPS * (direction == Direction.LEFT ? -1 : 1));
+  }
+
+  private static Rectangle startingRectFromPos(Point position, Direction direction) {
+    int x = position.x;
+    int y = position.y;
+    if (direction.isLeft()) {
+      // 'position' refers to the handle end of the spear.
+      x -= WIDTH_PX * Constants.SCALE;
+    }
+    return new Rectangle(x, y, WIDTH_PX * Constants.SCALE, HEIGHT_PX * Constants.SCALE);
   }
 
   @Override
